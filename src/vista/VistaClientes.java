@@ -1,57 +1,72 @@
 package vista;
 
-import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- * VISTA: ventana que muestra un cliente cada vez.
- * Solo dibuja y expone métodos. No tiene lógica ni conoce la clase Cliente.
- */
 public class VistaClientes extends JFrame {
-    private final JLabel lblPosicion = new JLabel("", SwingConstants.CENTER);
-    private final JLabel lblNombre = new JLabel();
-    private final JLabel lblEdad = new JLabel();
-    private final JButton btnAnterior = new JButton("< Anterior");
-    private final JButton btnSiguiente = new JButton("Siguiente >");
+
+    // Las tres opciones del menú.
+    private JMenuItem visualizar = new JMenuItem("Visualizar");
+    private JMenuItem nuevo = new JMenuItem("Nuevo");
+    private JMenuItem salir = new JMenuItem("Salir");
+
+    // Los dos paneles que podemos mostrar.
+    private PanelVisualizar panelVisualizar = new PanelVisualizar();
+    private PanelNuevo panelNuevo = new PanelNuevo();
 
     public VistaClientes() {
-        super("Clientes");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10, 10));
-        ((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JPanel datos = new JPanel(new GridLayout(2, 2, 8, 8));
-        datos.add(new JLabel("Nombre:"));
-        datos.add(lblNombre);
-        datos.add(new JLabel("Edad:"));
-        datos.add(lblEdad);
+        // Crear la ventana.
+        setTitle("Clientes");
+        setSize(620, 380);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        JPanel botones = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        botones.add(btnAnterior);
-        botones.add(btnSiguiente);
+        // Crear el menú.
+        JMenu menu = new JMenu("Clientes");
 
-        add(lblPosicion, BorderLayout.NORTH);
-        add(datos, BorderLayout.CENTER);
-        add(botones, BorderLayout.SOUTH);
+        menu.add(visualizar);
+        menu.add(nuevo);
+        menu.add(salir);
 
-        setSize(380, 220);
-        setLocationRelativeTo(null);
+        // Colocar el menú en la ventana.
+        JMenuBar barra = new JMenuBar();
+        barra.add(menu);
+        setJMenuBar(barra);
+
+        // Al empezar se muestra la lista de clientes.
+        setContentPane(panelVisualizar);
     }
 
-    public void mostrarCliente(String nombre, String edad, int posicion, int total) {
-        lblPosicion.setText("Cliente " + posicion + " de " + total);
-        lblNombre.setText(nombre);
-        lblEdad.setText(edad);
+    public void mostrarVisualizar() {
+        setContentPane(panelVisualizar);
+        revalidate();
+        repaint();
     }
 
-    /** El controlador decide qué botones tienen sentido; la vista solo obedece. */
-    public void setNavegacion(boolean puedeRetroceder, boolean puedeAvanzar) {
-        btnAnterior.setEnabled(puedeRetroceder);
-        btnSiguiente.setEnabled(puedeAvanzar);
+    public void mostrarNuevo() {
+        setContentPane(panelNuevo);
+        revalidate();
+        repaint();
     }
 
-    // La vista solo avisa de que "se pulsó algo"
-    public void addAnteriorListener(ActionListener l) { btnAnterior.addActionListener(l); }
-    public void addSiguienteListener(ActionListener l) { btnSiguiente.addActionListener(l); }
+    public PanelVisualizar getPanelVisualizar() {
+        return panelVisualizar;
+    }
+
+    public PanelNuevo getPanelNuevo() {
+        return panelNuevo;
+    }
+
+    public void addVisualizarListener(ActionListener accion) {
+        visualizar.addActionListener(accion);
+    }
+
+    public void addNuevoListener(ActionListener accion) {
+        nuevo.addActionListener(accion);
+    }
+
+    public void addSalirListener(ActionListener accion) {
+        salir.addActionListener(accion);
+    }
 }

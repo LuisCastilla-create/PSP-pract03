@@ -1,28 +1,69 @@
 package modelo;
 
-/** MODELO: un cliente con nombre y edad. No sabe nada de Swing. */
-public class Cliente {
+import java.time.LocalDate;
+
+public class Cliente implements Comparable<Cliente> {
+
+    private int numero;
     private String nombre;
-    private int edad;
+    private float puntos;
+    private LocalDate fechaNacimiento;
 
-    public Cliente(String nombre, int edad) {
-        setNombre(nombre);
-        setEdad(edad);
+    // Constructor sin parámetros
+    public Cliente() {
     }
 
-    public String getNombre() { return nombre; }
-    public int getEdad() { return edad; }
+    // Constructor con todos los datos
+    public Cliente(int numero, String nombre, float puntos,
+                   LocalDate fechaNacimiento) {
+        this.numero = numero;
+        this.nombre = nombre;
+        this.puntos = puntos;
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
-    // Las reglas de negocio viven en el modelo
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.isBlank())
-            throw new IllegalArgumentException("El nombre no puede estar vacío.");
-        this.nombre = nombre.trim();
+        this.nombre = nombre;
     }
 
-    public void setEdad(int edad) {
-        if (edad < 0)
-            throw new IllegalArgumentException("La edad no puede ser negativa.");
-        this.edad = edad;
+    public float getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(float puntos) {
+        this.puntos = puntos;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "numero=" + numero
+                + ", nombre=" + nombre
+                + ", puntos=" + puntos
+                + ", fechaNacimiento=" + fechaNacimiento + '}';
+    }
+    // El orden natural de los clientes es su número.
+    @Override
+    public int compareTo(Cliente otro) {
+        return Integer.compare(this.numero, otro.numero);
     }
 }
